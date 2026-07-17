@@ -20,6 +20,5 @@ public class GameStart {
         gj.setThead(th);
 
         gj.start();
-        
     }
 }
