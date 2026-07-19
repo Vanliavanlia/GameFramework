@@ -19,7 +19,7 @@ public class GameThread extends Thread {
     private long enemySpawnInterval = 1500;
     private boolean bossSpawned = false;
     private boolean running = true;
-    private int killCount = 0;                // 本关击杀计数
+    private int killCount = 0;
 
     public GameThread() {
         em = ElementManager.getManager();
@@ -60,7 +60,6 @@ public class GameThread extends Thread {
     private boolean gameRun() {
         Map<GameElement, List<ElementObj>> all = em.getGameElements();
 
-        // 1. 移动和过期清理
         for (GameElement ge : GameElement.values()) {
             List<ElementObj> list = all.get(ge);
             for (int i = list.size() - 1; i >= 0; i--) {
@@ -81,14 +80,12 @@ public class GameThread extends Thread {
         List<ElementObj> enemyBullets = em.getElementsByKey(GameElement.ENEMYFILE);
         List<ElementObj> items = em.getElementsByKey(GameElement.ITEM);
 
-        // 2. 玩家子弹 vs 敌人/Boss
         for (ElementObj bullet : playBullets) {
             for (ElementObj enemy : enemys) {
                 if (bullet.isLive() && enemy.isLive() && bullet.pk(enemy)) {
                     int beforeHp = enemy.getHp();
                     enemy.onHit(bullet.getAttack());
                     bullet.setLive(false);
-                    // 如果敌人被打死，计入击杀数
                     if (beforeHp > 0 && !enemy.isLive()) {
                         killCount++;
                     }
@@ -102,7 +99,6 @@ public class GameThread extends Thread {
             }
         }
 
-        // 3. 敌人子弹 vs 玩家
         for (ElementObj bullet : enemyBullets) {
             for (ElementObj player : plays) {
                 if (bullet.isLive() && player.isLive() && bullet.pk(player)) {
@@ -112,13 +108,11 @@ public class GameThread extends Thread {
             }
         }
 
-        // 4. 敌人/Boss 撞玩家
         for (ElementObj enemy : enemys) {
             for (ElementObj player : plays) {
                 if (enemy.isLive() && player.isLive() && enemy.pk(player)) {
                     player.onHit(enemy.getAttack());
                     enemy.setLive(false);
-                    // 撞死也算击杀（如果之前未死）
                     killCount++;
                 }
             }
@@ -132,7 +126,6 @@ public class GameThread extends Thread {
             }
         }
 
-        // 5. 玩家 vs 道具
         for (ElementObj item : items) {
             for (ElementObj player : plays) {
                 if (item.isLive() && player.isLive() && item.pk(player)) {
@@ -144,20 +137,17 @@ public class GameThread extends Thread {
             }
         }
 
-        // 6. 生成敌人
         if (gameTime - enemyLastSpawn > enemySpawnInterval) {
             enemyLastSpawn = gameTime;
             int randomType = (int)(Math.random() * 12) + 1;
             GameLoad.spawnEnemy(randomType);
         }
 
-        // 7. Boss 生成条件：击杀数 >= 30 且未生成过
         if (!bossSpawned && killCount >= 20) {
             bossSpawned = true;
             GameLoad.spawnBoss(1);
         }
 
-        // 8. 玩家存活检查
         boolean playerAlive = false;
         for (ElementObj player : plays) {
             if (player.isLive()) {
@@ -170,7 +160,6 @@ public class GameThread extends Thread {
             return false;
         }
 
-        // 9. 关卡结束条件：Boss已生成且已死亡，且没有敌人
         if (bossSpawned) {
             boolean bossDead = true;
             for (ElementObj b : bosses) {
@@ -188,7 +177,7 @@ public class GameThread extends Thread {
                 }
                 em.clearAllElements();
                 gameLoad();
-                return false; // 重新进入当前循环，重置计时和击杀
+                return false;
             }
         }
 

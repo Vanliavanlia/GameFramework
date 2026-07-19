@@ -12,9 +12,8 @@ public class PlayerPlane extends ElementObj {
     private int planeType;
     private boolean up, down, left, right;
     private long lastShootTime = 0;
-    private final long normalShootInterval = 200;   // 普通射击间隔
+    private final long normalShootInterval = 200;
 
-    // 道具状态
     private int revive = 0;
     private int diamond = 0;
     private boolean superBulletActive = false;
@@ -54,10 +53,10 @@ public class PlayerPlane extends ElementObj {
     @Override
     public void keyClick(boolean pressed, int keyCode) {
         switch (keyCode) {
-            case 65: left = pressed; break;   // A
-            case 87: up = pressed; break;     // W
-            case 68: right = pressed; break;  // D
-            case 83: down = pressed; break;   // S
+            case 65: left = pressed; break;
+            case 87: up = pressed; break;
+            case 68: right = pressed; break;
+            case 83: down = pressed; break;
         }
     }
 
@@ -87,7 +86,6 @@ public class PlayerPlane extends ElementObj {
     }
 
     public void shoot(long gameTime) {
-        // 计算当前射击间隔（超级子弹时减半）
         long interval = superBulletActive ? normalShootInterval / 2 : normalShootInterval;
         if (gameTime - lastShootTime < interval) return;
 
@@ -96,7 +94,6 @@ public class PlayerPlane extends ElementObj {
         ElementObj bulletObj = GameLoad.getObj("bullet");
         if (bulletObj instanceof Bullet) {
             Bullet bullet = (Bullet) bulletObj;
-            // 根据当前状态设置子弹类型（仅一种，不会同时发射两种）
             if (superBulletActive) {
                 bullet.setBulletType(114);
             } else {
@@ -128,30 +125,24 @@ public class PlayerPlane extends ElementObj {
     @Override
     protected void updateImage(long time) {
         long now = System.currentTimeMillis();
-        // 超级子弹时间检查
         if (superBulletActive && now > superBulletEndTime) {
             superBulletActive = false;
-            // 强制重置射击计时，避免因高速期间刚发射过导致下一次发射等待过久
             lastShootTime = 0;
         }
-        // 加速时间检查
         if (speedBoostActive && now > speedBoostEndTime) {
             speedBoostActive = false;
         }
-        // 无敌时间检查
         if (invincibleActive && now > invincibleEndTime) {
             invincibleActive = false;
         }
     }
 
-    // ---- 道具触发 ----
     public void addRevive() { revive++; }
     public void addDiamond(int count) { diamond += count; }
 
     public void activateSuperBullet(long durationMs) {
         superBulletActive = true;
         superBulletEndTime = System.currentTimeMillis() + durationMs;
-        // 激活时重置上次射击时间，让玩家立即可以快速射击
         lastShootTime = 0;
     }
 
@@ -165,7 +156,6 @@ public class PlayerPlane extends ElementObj {
         invincibleEndTime = System.currentTimeMillis() + durationMs;
     }
 
-    // ---- 倒计时显示 ----
     public long getSuperBulletRemaining() {
         if (!superBulletActive) return 0;
         long remaining = superBulletEndTime - System.currentTimeMillis();

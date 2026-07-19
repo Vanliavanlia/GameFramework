@@ -24,7 +24,6 @@ public class GameListener implements KeyListener {
         if (keys.contains(key)) return;
         keys.add(key);
 
-        // 只处理移动键，不再调用 shoot
         List<ElementObj> players = em.getElementsByKey(GameElement.PLAY);
         for (ElementObj player : players) {
             player.keyClick(true, key);

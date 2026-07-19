@@ -44,34 +44,30 @@ public class Item extends ElementObj {
         return itemType;
     }
 
-    /**
-     * 拾取道具时的效果
-     * @param player 玩家飞机对象
-     */
     public void applyEffect(ElementObj player) {
         if (!(player instanceof PlayerPlane)) return;
         PlayerPlane plane = (PlayerPlane) player;
 
         switch (itemType) {
-        	case 1: // 回复 2 点血量
+        	case 1:
         		plane.heal(2);
         		break;
-        	case 2: // 回复 1 点血量
+        	case 2:
         		plane.heal(1);
         		break;
-            case 3: // 增加一次复活机会
-                plane.addRevive();   // 需要在PlayerPlane中添加方法
+            case 3:
+                plane.addRevive();
                 break;
-            case 4: // 钻石（局外购买），暂存数量
+            case 4:
                 plane.addDiamond(1);
                 break;
-            case 5: // 护盾，抵挡一次伤害
+            case 5:
             	plane.activateInvincible(10000);
                 break;
-            case 6: // 超级子弹时间：10秒内子弹替换为114，射速加倍
-                plane.activateSuperBullet(10000); // 10秒 = 10000毫秒
+            case 6:
+                plane.activateSuperBullet(10000);
                 break;
-            case 7: // 移动速度提升 50%，持续15秒
+            case 7:
                 plane.activateSpeedBoost(15000);
                 break;
         }

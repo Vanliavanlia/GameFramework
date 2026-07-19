@@ -40,7 +40,6 @@ public class GameMainJPanel extends JPanel implements Runnable {
             }
         }
 
-        // 玩家状态
         List<ElementObj> players = em.getElementsByKey(GameElement.PLAY);
         if (!players.isEmpty() && players.get(0) instanceof PlayerPlane) {
             PlayerPlane player = (PlayerPlane) players.get(0);
@@ -51,11 +50,10 @@ public class GameMainJPanel extends JPanel implements Runnable {
             g.drawString("HP: " + player.getHp(), 20, y); y += 20;
             g.drawString("钻石: " + player.getDiamond(), 20, y); y += 20;
             g.drawString("复活: " + player.getRevive(), 20, y);
-            g.drawString("复活: " + player.getRevive(), 20, 70); // 这里重复了，修正一下
-            // 统一显示位置如下：
             g.drawString("复活: " + player.getRevive(), 20, 70);
 
-            // 倒计时
+            g.drawString("复活: " + player.getRevive(), 20, 70);
+
             long speedRemaining = player.getSpeedBoostRemaining();
             long bulletRemaining = player.getSuperBulletRemaining();
             long invincibleRemaining = player.getInvincibleRemaining();

@@ -35,7 +35,6 @@ public class Enemy extends ElementObj {
             hp = 2;
             attack = 1;
             moveSpeed = 2;
-            // 射击间隔增大1.5倍：原3000+随机3000 -> 4500+随机4500
             shootInterval = 4500 + (int)(Math.random() * 4500);
             bulletType = (int)(Math.random() * 7) + 1;
         }

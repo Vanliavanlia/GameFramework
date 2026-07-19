@@ -10,14 +10,12 @@ public class Background extends ElementObj {
     @Override
     public void showElement(Graphics g) {
         if (getIcon() != null) {
-            // 将背景图拉伸到整个窗口大小，覆盖全部
             g.drawImage(getIcon().getImage(), 0, 0, GameJFrame.GameX, GameJFrame.GameY, null);
         }
     }
 
     @Override
     public ElementObj createElement(String str) {
-        // 格式：x,y,key  例如 "0,0,background/1"
         String[] parts = str.split(",");
         if (parts.length == 3) {
             setX(Integer.parseInt(parts[0]));

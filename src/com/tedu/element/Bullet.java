@@ -22,28 +22,21 @@ public class Bullet extends ElementObj {
         }
     }
 
-    /**
-     * 设置子弹类型
-     * @param type  1 = 玩家子弹（固定101）
-     *              2 = 保留（现在较少直接使用，但可由 Enemy 传入随机1~11）
-     *              114 = 超级子弹
-     *              其他1~11 = 敌人子弹（随机）
-     */
     public void setBulletType(int type) {
         String key = null;
-        if (type == 1) {               // 普通玩家子弹
+        if (type == 1) {
             key = "fire/101";
             dir = -1;
             moveSpeed = 8;
             attack = 1;
             backupColor = Color.GREEN;
-        } else if (type >= 1 && type <= 11) { // 敌人子弹（1~11 随机）
+        } else if (type >= 1 && type <= 11) {
             key = "fire/" + type;
-            dir = 1;                   // 向下
+            dir = 1;
             moveSpeed = 4;
             attack = 1;
             backupColor = Color.RED;
-        } else if (type == 114) {      // 超级子弹
+        } else if (type == 114) {
             key = "fire/114";
             dir = -1;
             moveSpeed = 10;

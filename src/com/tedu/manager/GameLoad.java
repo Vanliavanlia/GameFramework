@@ -17,7 +17,6 @@ public class GameLoad {
     private static Map<String, Class<?>> objMap = new HashMap<>();
     private static final String IMAGE_PATH = "image";
 
-    // ---------- 加载类映射（硬编码，无需配置文件）----------
     public static void loadObj() {
         try {
             objMap.put("player", Class.forName("com.tedu.element.PlayerPlane"));
@@ -32,7 +31,6 @@ public class GameLoad {
         }
     }
 
-    // ---------- 加载图片 ----------
     public static void loadImages() {
         File root = new File(IMAGE_PATH);
         if (!root.exists()) {
@@ -74,7 +72,6 @@ public class GameLoad {
         return null;
     }
 
-    // ---------- 背景 ----------
     public static void loadBackground(int level) {
         String key = "background/" + level;
         ImageIcon bgIcon = imgMap.get(key);
@@ -90,7 +87,6 @@ public class GameLoad {
         }
     }
 
-    // ---------- 玩家 ----------
     public static void loadPlayer(int planeType) {
         String key = "play/" + planeType;
         ImageIcon icon = imgMap.get(key);
@@ -108,7 +104,6 @@ public class GameLoad {
         }
     }
 
-    // ---------- 敌人生成（修改：随机范围1~12）----------
     public static void spawnEnemy(int enemyType) {
         String key = "enemy/" + enemyType;
         ImageIcon icon = imgMap.get(key);
@@ -126,7 +121,6 @@ public class GameLoad {
         }
     }
 
-    // ---------- Boss生成 ----------
     public static void spawnBoss(int bossType) {
         ElementObj boss = getObj("boss");
         if (boss != null) {
@@ -138,7 +132,6 @@ public class GameLoad {
         }
     }
 
-    // ---------- 道具生成 ----------
     public static void spawnItem(int x, int y, int itemType) {
         ElementObj item = getObj("item");
         if (item != null) {

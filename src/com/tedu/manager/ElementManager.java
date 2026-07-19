@@ -23,16 +23,12 @@ public class ElementManager {
         return gameElements.get(ge);
     }
 
-    /**
-     * 清空所有元素的列表（保留Map结构）
-     */
     public void clearAllElements() {
         for (List<ElementObj> list : gameElements.values()) {
             list.clear();
         }
     }
 
-    // ---------- 单例 ----------
     private static ElementManager EM = null;
 
     public static synchronized ElementManager getManager() {
